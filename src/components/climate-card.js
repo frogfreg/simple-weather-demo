@@ -27,7 +27,7 @@ function ClimateCard({ weatherReport }) {
       </p>
       <figure className="image is-128x128 is-inline-block">
         <img
-          src={`https://www.metaweather.com/static/img/weather/${weatherReport?.weather_state_abbr}.svg`}
+          src={`https://www.metaweather.com/static/img/weather/${weatherReport?.weather_state_abbr}.svg` alt="current weather"}
         />
       </figure>
       <p className="subtitle">

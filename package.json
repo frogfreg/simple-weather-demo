@@ -1,8 +1,8 @@
 {
-  "name": "project-1",
+  "name": "Simple Weather",
   "version": "1.0.0",
   "private": true,
-  "description": "project 1",
+  "description": "A simple weather demo app",
   "author": "Guillermo Fernandez",
   "keywords": [
     "gatsby"

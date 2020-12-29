@@ -16,6 +16,7 @@ function App() {
         } = position;
 
         try {
+          // new api http://api.openweathermap.org/data/2.5/forecast?lat=19.6281019&lon=-99.2453128&appid=41192770b11fd28f630776e9b1491112&units=metric
           const {
             data: [{ woeid }],
           } = await axios.get(
@@ -54,23 +55,23 @@ function App() {
               />
             </div>
           </div>
-          <div className="columns">
-            <div className="column">
+          <div className="columns is-mobile is-multiline ">
+            <div className="column is-half-mobile is-one-quarter-desktop">
               <ClimateCard
                 weatherReport={weatherInfo?.consolidated_weather[1]}
               />
             </div>
-            <div className="column">
+            <div className="column is-half-mobile is-one-quarter-desktop">
               <ClimateCard
                 weatherReport={weatherInfo?.consolidated_weather[2]}
               />
             </div>
-            <div className="column">
+            <div className="column is-half-mobile is-one-quarter-desktop">
               <ClimateCard
                 weatherReport={weatherInfo?.consolidated_weather[3]}
               />
             </div>
-            <div className="column">
+            <div className="column is-half-mobile is-one-quarter-desktop">
               <ClimateCard
                 weatherReport={weatherInfo?.consolidated_weather[4]}
               />

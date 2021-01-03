@@ -1,6 +1,8 @@
 
 # Simple weather app.
 
+Manually deployed at Netlify, preview might not be up to date.
+
 ## 🚀 Quick start
 
 1.  **Create a Gatsby site.**

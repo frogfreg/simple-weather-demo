@@ -7,6 +7,7 @@ import "./app.css";
 
 function App() {
   const [weatherInfo, setWeatherInfo] = useState(null);
+  // const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -17,16 +18,21 @@ function App() {
 
         try {
           // new api http://api.openweathermap.org/data/2.5/forecast?lat=19.6281019&lon=-99.2453128&appid=41192770b11fd28f630776e9b1491112&units=metric
-          const {
-            data: [{ woeid }],
-          } = await axios.get(
-            `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?lattlong=${latitude},${longitude}`
+          // ONE CALL https://api.openweathermap.org/data/2.5/onecall?lat=19.6281019&lon=-99.2453128&appid=41192770b11fd28f630776e9b1491112&units=metric
+          const weatherPromise = axios.get(
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
           );
-          const { data: newWeatherInfo } = await axios.get(
-            `https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeid}`
+          const cityPromise = axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
           );
-
+          const [
+            { data: newWeatherInfo },
+            { data: newCityInfo },
+          ] = await Promise.all([weatherPromise, cityPromise]);
+          newWeatherInfo.city = newCityInfo.city;
           setWeatherInfo(newWeatherInfo);
+          // setCity(newCityInfo.city);
+          // console.log(newWeatherInfo);
         } catch (err) {
           setError(err);
           console.log(err);
@@ -46,36 +52,23 @@ function App() {
       {weatherInfo ? (
         <div className="container">
           <h1 className="title is-1 has-text-centered">
-            Weather in {weatherInfo?.title}
+            Weather in {weatherInfo?.city.name}
           </h1>
           <div className="columns is-centered">
             <div className="column is-half">
-              <ClimateCard
-                weatherReport={weatherInfo?.consolidated_weather[0]}
-              />
+              <ClimateCard weatherReport={weatherInfo?.current} />
             </div>
           </div>
           <div className="columns is-mobile is-multiline ">
-            <div className="column is-half-mobile is-one-quarter-desktop">
-              <ClimateCard
-                weatherReport={weatherInfo?.consolidated_weather[1]}
-              />
-            </div>
-            <div className="column is-half-mobile is-one-quarter-desktop">
-              <ClimateCard
-                weatherReport={weatherInfo?.consolidated_weather[2]}
-              />
-            </div>
-            <div className="column is-half-mobile is-one-quarter-desktop">
-              <ClimateCard
-                weatherReport={weatherInfo?.consolidated_weather[3]}
-              />
-            </div>
-            <div className="column is-half-mobile is-one-quarter-desktop">
-              <ClimateCard
-                weatherReport={weatherInfo?.consolidated_weather[4]}
-              />
-            </div>
+            {weatherInfo.daily
+              .filter((weatherReport, index) => index <= 4 && index > 0)
+              .map((weatherReport) => {
+                return (
+                  <div className="column is-half-mobile is-one-quarter-desktop">
+                    <ClimateCard weatherReport={weatherReport} />
+                  </div>
+                );
+              })}
           </div>
         </div>
       ) : (

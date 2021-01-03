@@ -18,10 +18,10 @@ function App() {
 
         try {
           const weatherPromise = axios.get(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
+            `https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
           );
           const cityPromise = axios.get(
-            `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
+            `https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
           );
           const [
             { data: newWeatherInfo },
@@ -62,7 +62,10 @@ function App() {
               .map((weatherReport) => {
                 weatherReport.feels_like = null;
                 return (
-                  <div className="column is-half-mobile is-one-quarter-desktop">
+                  <div
+                    key={weatherReport?.dt}
+                    className="column is-half-mobile is-one-quarter-desktop"
+                  >
                     <ClimateCard weatherReport={weatherReport} />
                   </div>
                 );
@@ -72,7 +75,7 @@ function App() {
       ) : (
         <div className="progress">
           {error ? (
-            <h2 className="title is-2 has-text-centered">{error}</h2>
+            <h2 className="title is-2 has-text-centered">{error.message}</h2>
           ) : (
             <h2 className="title is-2 has-text-centered">
               Loading the weather info, please wait

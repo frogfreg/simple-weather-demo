@@ -47,7 +47,7 @@ function ClimateCard({ weatherReport }) {
       <figure className="image is-128x128 is-inline-block">
         <img
           alt="current weather"
-          src={`https://openweathermap.org/img/wn/${weatherReport.weather[0].icon}@2x.png`}
+          src={`http://openweathermap.org/img/wn/${weatherReport.weather[0].icon}@2x.png`}
         />
       </figure>
       <p className="subtitle">{getDateString(weatherReport?.dt)[0]}</p>

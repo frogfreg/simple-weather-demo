@@ -4,10 +4,10 @@ import "bulma/css/bulma.min.css";
 import { Helmet } from "react-helmet";
 import ClimateCard from "./climate-card";
 import "./app.css";
+import { countryCodes } from "../utils/country-codes";
 
 function App() {
   const [weatherInfo, setWeatherInfo] = useState(null);
-  // const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -17,8 +17,6 @@ function App() {
         } = position;
 
         try {
-          // new api http://api.openweathermap.org/data/2.5/forecast?lat=19.6281019&lon=-99.2453128&appid=41192770b11fd28f630776e9b1491112&units=metric
-          // ONE CALL https://api.openweathermap.org/data/2.5/onecall?lat=19.6281019&lon=-99.2453128&appid=41192770b11fd28f630776e9b1491112&units=metric
           const weatherPromise = axios.get(
             `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=41192770b11fd28f630776e9b1491112&units=metric`
           );
@@ -31,8 +29,6 @@ function App() {
           ] = await Promise.all([weatherPromise, cityPromise]);
           newWeatherInfo.city = newCityInfo.city;
           setWeatherInfo(newWeatherInfo);
-          // setCity(newCityInfo.city);
-          // console.log(newWeatherInfo);
         } catch (err) {
           setError(err);
           console.log(err);
@@ -53,6 +49,7 @@ function App() {
         <div className="container">
           <h1 className="title is-1 has-text-centered">
             Weather in {weatherInfo?.city.name}
+            {`, ${countryCodes[weatherInfo?.city.country]}`}
           </h1>
           <div className="columns is-centered">
             <div className="column is-half">
@@ -63,6 +60,7 @@ function App() {
             {weatherInfo.daily
               .filter((weatherReport, index) => index <= 4 && index > 0)
               .map((weatherReport) => {
+                weatherReport.feels_like = null;
                 return (
                   <div className="column is-half-mobile is-one-quarter-desktop">
                     <ClimateCard weatherReport={weatherReport} />

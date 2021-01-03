@@ -37,7 +37,7 @@ function ClimateCard({ weatherReport }) {
         °C
       </p>
       <p className="subtitle has-text-centered">
-        {weatherReport.feels_like.eve
+        {weatherReport?.feels_like?.eve
           ? `feels like ${Math.round(weatherReport?.feels_like.eve, 0)}°C`
           : `feels like ${Math.round(weatherReport?.feels_like, 0)}°C`}
       </p>
@@ -47,7 +47,7 @@ function ClimateCard({ weatherReport }) {
       <figure className="image is-128x128 is-inline-block">
         <img
           alt="current weather"
-          src={`http://openweathermap.org/img/wn/${weatherReport.weather[0].icon}@2x.png`}
+          src={`https://openweathermap.org/img/wn/${weatherReport.weather[0].icon}@2x.png`}
         />
       </figure>
       <p className="subtitle">{getDateString(weatherReport?.dt)[0]}</p>
